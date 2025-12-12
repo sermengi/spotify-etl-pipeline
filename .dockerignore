@@ -1,0 +1,19 @@
+# Go build artifacts
+bin/
+*.out
+
+# VCS
+.git
+.gitignore
+
+# IDE / editor
+.vscode/
+.idea/
+*.swp
+
+# OS files
+.DS_Store
+
+# Other
+docker-compose.override.yml
+.env
