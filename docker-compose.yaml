@@ -1,0 +1,11 @@
+version: '3.9'
+
+services:
+  api:
+    container_name: spotify-etl-api
+    build:
+      context: .
+      dockerfile: Dockerfile 
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
