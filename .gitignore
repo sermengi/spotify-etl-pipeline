@@ -17,3 +17,6 @@ vendor/
 
 # Env
 .env
+
+# Folder
+/scratch
