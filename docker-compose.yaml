@@ -69,7 +69,30 @@ services:
       timeout: 5s
       retries: 20
 
-  
+  init-kafka:
+    image: confluentinc/cp-kafka:7.6.0
+    container_name: spotify-etl-init-kafka
+    depends_on:
+      kafka:
+        condition: service_healthy
+    entrypoint: ["/bin/bash", "-lc"]
+    command: >
+      '
+      echo "Waiting for Kafka to be reachable..." ;
+      for i in {1..60}; do
+        kafka-broker-api-versions --bootstrap-server kafka:29092 >/dev/null 2>&1 && break ;
+        sleep 2 ;
+      done ;
+
+      echo "Creating topics (idempotent)..." ;
+
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic spotify-events --partitions 1 --replication-factor 1 ;
+
+      echo "Done. Current topics:" ;
+      kafka-topics --bootstrap-server kafka:29092 --list ;
+      '
+    restart: "no"
+
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: spotify-etl-kafka-ui
