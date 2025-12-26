@@ -6,7 +6,7 @@ BIN_DIR := bin
 
 DOCKER_IMAGE := spotify-etl-api 
 
-.PHONY: docker_build docker-run compose-up compose-down build-api lint-go tidy
+.PHONY: docker_build docker-run compose-up compose-down build-api kafka-topics lint-go tidy 
 
 docker-build:
 	docker build -t $(DOCKER_IMAGE) .
@@ -25,6 +25,9 @@ build-api:
 
 lint-go:
 	golangci-lint run ./...
+
+kafka-topics:
+	./scripts/create-topics.sh
 
 tidy:
 	$(GO) mod tidy
